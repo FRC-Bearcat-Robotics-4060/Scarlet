@@ -5,11 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,15 +19,20 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+
+  //Define my DriveSubsystem so it can be referenced.
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  
+  // private final JoystickDriveCommand defaulJoystickDriveCommand = new JoystickDriveCommand(driveSubsystem);
 
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  //Joystick One
+  public static Joystick _joystick1 = new Joystick(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+      //Despite the research, the only way to set a 'default command' for a subsystem to continually run is to run it like this, no clue why!
+    driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.setDrivetrain((-_joystick1.getRawAxis(4) * 0.5), (_joystick1.getRawAxis(1) * 0.2), true), driveSubsystem));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -38,15 +43,24 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  // public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
-  }
+    // return m_autoCommand;
+  // }
+  // public Command getJoystickDriveCommand() {
+  //   return new JoystickDriveCommand(
+  //     driveSubsystem, () ->  -_joystick1.getRawAxis(1), () -> _joystick1.getRawAxis(4)
+  //   );
+
+  // }
 }
